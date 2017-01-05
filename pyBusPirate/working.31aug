@@ -1,0 +1,349 @@
+Script started on Fri 02 Sep 2016 09:47:14 AM CDT
+herman@touring:/arm/opt/nordic/pyBusPirate$ nrftool-d info /dev/ttyUSB0
+port >  8a 63 48
+ack <  01 01 01
+port >  16
+port >  ff ff ff ff ff ff ff
+ack <  01 01 01 01 01 01 01 01
+port >  11
+port >  9e e7
+ack <  01 01 01
+port >  16
+port >  ff ff ff ff ff ff ff
+ack <  01 01 01 01 01 01 01 01
+port >  10
+port >  00
+ack <  01 01
+port >  10
+port >  a5
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  0b b1 14 77
+port >  21
+ack <  01
+port >  10
+port >  81
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  1e 00 00 00
+ack <  01 01 01 01 01
+port >  30
+port >  00
+ack <  01 01
+port >  10
+port >  b1
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  00 00 00 00
+ack <  01 01 01 01 01
+port >  30
+port >  00
+ack <  01 01
+port >  10
+port >  a9
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  00 00 00 50
+ack <  01 01 01 01 01
+port >  30
+port >  00
+ack <  01 01
+port >  10
+port >  8d
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  f0 00 00 00
+port >  21
+ack <  01
+port >  10
+port >  b1
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  f0 00 00 00
+ack <  01 01 01 01 01
+port >  30
+port >  00
+ack <  01 01
+port >  10
+port >  9f
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  00 00 00 00
+port >  21
+ack <  01
+port >  10
+port >  bd
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  04 77 00 21
+port >  21
+ack <  01
+port >  10
+port >  b1
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  00 00 00 00
+ack <  01 01 01 01 01
+port >  30
+port >  00
+ack <  01 01
+port >  10
+port >  87
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  00 00 00 00
+port >  21
+ack <  01
+port >  10
+port >  bd
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  03 00 00 40
+port >  21
+ack <  01
+port >  10
+port >  a3
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  52 00 00 03
+ack <  01 01 01 01 01
+port >  30
+port >  80
+ack <  01 01
+port >  10
+port >  87
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  00 00 00 00
+port >  21
+ack <  01
+port >  10
+port >  bd
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  03 00 00 52
+port >  21
+ack <  01
+port >  10
+port >  8b
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  10 00 00 10
+ack <  01 01 01 01 01
+port >  30
+port >  00
+ack <  01 01
+port >  10
+port >  b1
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  10 00 00 00
+ack <  01 01 01 01 01
+port >  30
+port >  80
+ack <  01 01
+port >  10
+port >  87
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  00 00 00 00
+port >  21
+ack <  01
+port >  10
+port >  bd
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  00 00 04 00
+port >  21
+ack <  01
+CODEPAGESIZE = 1024
+port >  10
+port >  af
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  00 00 00 00
+port >  21
+ack <  01
+port >  10
+port >  bd
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  00 00 01 00
+port >  21
+ack <  01
+CODSIZE = 256
+port >  10
+port >  b1
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  00 00 00 00
+ack <  01 01 01 01 01
+port >  30
+port >  00
+ack <  01 01
+port >  10
+port >  8b
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  20 00 00 10
+ack <  01 01 01 01 01
+port >  30
+port >  00
+ack <  01 01
+port >  10
+port >  b1
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  21
+ack <  01
+port >  13
+port >  10 00 00 00
+ack <  01 01 01 01 01
+port >  30
+port >  80
+ack <  01 01
+port >  10
+port >  b7
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  00 00 00 00
+port >  21
+ack <  01
+port >  10
+port >  bd
+ack <  01 01
+port >  07 07 07
+data <  01 00 00
+port >  06
+port >  06
+port >  06
+port >  06
+port >  07
+data read <  ff ff ff ff
+port >  21
+ack <  01
+CLEN0 = 4294967295
+Done.
+herman@touring:/arm/opt/nordic/pyBusPirate$ exit
+exit
+
+Script done on Fri 02 Sep 2016 09:47:30 AM CDT

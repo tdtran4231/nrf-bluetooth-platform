@@ -1,0 +1,10 @@
+static void read_lm75b_registers_cb(ret_code_t result, void * p_user_data)
+{
+    if (result != NRF_SUCCESS)
+    {
+        printf("read_lm75b_registers_cb - error: %d\r\n", (int)result);
+        return;
+    }
+
+    print_data("LM75B:", m_buffer, 7);
+}

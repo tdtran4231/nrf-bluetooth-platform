@@ -1,0 +1,3 @@
+#define LM75B_READ(p_reg_addr, p_buffer, byte_cnt) \
+    APP_TWI_WRITE(LM75B_ADDR, p_reg_addr, 1,        APP_TWI_NO_STOP), \
+    APP_TWI_READ (LM75B_ADDR, p_buffer,   byte_cnt, 0)

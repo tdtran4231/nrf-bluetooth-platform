@@ -1,0 +1,562 @@
+Archive member included because of file (symbol)
+
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-exit.o)
+                              /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o (exit)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-impure.o)
+                              /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-exit.o) (_global_impure_ptr)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-init.o)
+                              /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o (__libc_init_array)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memset.o)
+                              /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o (memset)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libnosys.a(_exit.o)
+                              /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-exit.o) (_exit)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcmp.o)
+                              _build/device_manager_peripheral.o (symbol from plugin) (memcmp)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcpy.o)
+                              _build/app_scheduler.o (symbol from plugin) (memcpy)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-strlen.o)
+                              _build/main.o (symbol from plugin) (strlen)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_udivsi3.o)
+                              /tmp/ccayX4P0.ltrans0.ltrans.o (__aeabi_uidiv)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_divsi3.o)
+                              /tmp/ccayX4P0.ltrans2.ltrans.o (__aeabi_idiv)
+/arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_dvmd_tls.o)
+                              /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_udivsi3.o) (__aeabi_idiv0)
+
+Allocating common symbols
+Common symbol       size              file
+
+m_our_service       0x4               _build/main.o (symbol from plugin)
+
+Discarded input sections
+
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
+ .text          0x00000000       0x60 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .data          0x00000000        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .bss           0x00000000       0x1c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .init_array    0x00000000        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .fini_array    0x00000000        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .eh_frame      0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .jcr           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .ARM.attributes
+                0x00000000       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o
+ .ARM.extab     0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-exit.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-exit.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-exit.o)
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-impure.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-impure.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-impure.o)
+ .data._impure_ptr
+                0x00000000        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-impure.o)
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-init.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-init.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-init.o)
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memset.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memset.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memset.o)
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libnosys.a(_exit.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libnosys.a(_exit.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libnosys.a(_exit.o)
+ .text          0x00000000        0x0 _build/app_error.o (symbol from plugin)
+ .data          0x00000000        0x0 /tmp/ccayX4P0.ltrans0.ltrans.o
+ .data.SystemCoreClock
+                0x00000000        0x4 /tmp/ccayX4P0.ltrans0.ltrans.o
+ .data          0x00000000        0x0 /tmp/ccayX4P0.ltrans1.ltrans.o
+ .bss           0x00000000        0x0 /tmp/ccayX4P0.ltrans3.ltrans.o
+ .data          0x00000000        0x0 /tmp/ccayX4P0.ltrans4.ltrans.o
+ .data          0x00000000        0x0 /tmp/ccayX4P0.ltrans5.ltrans.o
+ .data          0x00000000        0x0 /tmp/ccayX4P0.ltrans6.ltrans.o
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_udivsi3.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_udivsi3.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_divsi3.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_divsi3.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_dvmd_tls.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_dvmd_tls.o)
+ .text          0x00000000        0x0 _build/app_scheduler.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/app_timer.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/app_timer_appsh.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/nrf_assert.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/nrf_drv_common.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/nrf_delay.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/pstorage.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/main.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/our_service.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/ble_advdata.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/ble_conn_params.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/ble_srv_common.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/ble_advertising.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/device_manager_peripheral.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/system_nrf51.o (symbol from plugin)
+ .text          0x00000000        0x0 _build/softdevice_handler.o (symbol from plugin)
+ .data          0x00000000        0x0 _build/gcc_startup_nrf51.o
+ .bss           0x00000000        0x0 _build/gcc_startup_nrf51.o
+ .ARM.extab     0x00000000        0x0 _build/gcc_startup_nrf51.o
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcmp.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcmp.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcmp.o)
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcpy.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcpy.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcpy.o)
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-strlen.o)
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-strlen.o)
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-strlen.o)
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtend.o
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtend.o
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtend.o
+ .eh_frame      0x00000000        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtend.o
+ .jcr           0x00000000        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtend.o
+ .ARM.attributes
+                0x00000000       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtend.o
+ .text          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
+ .data          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
+ .bss           0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x00018000         0x00028000         xr
+RAM              0x20002000         0x00002000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libnosys.a
+LOAD _build/app_error.o
+LOAD /tmp/ccayX4P0.ltrans0.ltrans.o
+LOAD /tmp/ccayX4P0.ltrans1.ltrans.o
+LOAD /tmp/ccayX4P0.ltrans2.ltrans.o
+LOAD /tmp/ccayX4P0.ltrans3.ltrans.o
+LOAD /tmp/ccayX4P0.ltrans4.ltrans.o
+LOAD /tmp/ccayX4P0.ltrans5.ltrans.o
+LOAD /tmp/ccayX4P0.ltrans6.ltrans.o
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a
+LOAD _build/app_scheduler.o
+LOAD _build/app_timer.o
+LOAD _build/app_timer_appsh.o
+LOAD _build/nrf_assert.o
+LOAD _build/nrf_drv_common.o
+LOAD _build/nrf_delay.o
+LOAD _build/pstorage.o
+LOAD _build/main.o
+LOAD _build/our_service.o
+LOAD _build/ble_advdata.o
+LOAD _build/ble_conn_params.o
+LOAD _build/ble_srv_common.o
+LOAD _build/ble_advertising.o
+LOAD _build/device_manager_peripheral.o
+LOAD _build/system_nrf51.o
+LOAD _build/softdevice_handler.o
+LOAD _build/gcc_startup_nrf51.o
+START GROUP
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a
+END GROUP
+START GROUP
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a
+END GROUP
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtend.o
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
+START GROUP
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc.a
+LOAD /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libnosys.a
+END GROUP
+
+.text           0x00018000     0x4bc4
+ *(.Vectors)
+ .Vectors       0x00018000       0xc0 _build/gcc_startup_nrf51.o
+                0x00018000                __Vectors
+ *(.text*)
+ .text          0x000180c0       0x78 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o
+                0x000180c0                _mainCRTStartup
+                0x000180c0                _start
+ .text.exit     0x00018138       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-exit.o)
+                0x00018138                exit
+ .text.__libc_init_array
+                0x00018164       0x4c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-init.o)
+                0x00018164                __libc_init_array
+ .text.memset   0x000181b0       0x10 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memset.o)
+                0x000181b0                memset
+ .text._exit    0x000181c0        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libnosys.a(_exit.o)
+                0x000181c0                _exit
+ .text          0x000181c4      0xde8 /tmp/ccayX4P0.ltrans0.ltrans.o
+                0x000181c4                sd_flash_page_erase.lto_priv.126
+                0x000181c8                sd_flash_write.lto_priv.127
+                0x000181cc                store_cmd_flash_write_execute.lto_priv.125
+                0x000182ec                flash_api_err_code_process.lto_priv.122
+                0x0001834c                state_entry_action_run.lto_priv.95
+                0x00018504                state_swap_erase_entry_run.lto_priv.78
+                0x000185a8                state_restore_head_entry_run.lto_priv.82
+                0x00018658                state_restore_tail_entry_run.lto_priv.81
+                0x00018718                head_restore_state_run.lto_priv.124
+                0x00018930                state_erase_data_page_entry_run.lto_priv.80
+                0x000189a0                state_write_data_swap_entry_run.lto_priv.79
+                0x00018a50                rtc1_stop.lto_priv.93
+                0x00018ac8                SWI0_IRQHandler
+                0x00018ec0                NVIC_SystemReset.lto_priv.37
+                0x00018ed8                RTC1_IRQHandler
+ .text.unlikely
+                0x00018fac       0x8c /tmp/ccayX4P0.ltrans0.ltrans.o
+                0x00018fac                cmd_queue_enqueue.lto_priv.89
+ .text          0x00019038      0x9c4 /tmp/ccayX4P0.ltrans1.ltrans.o
+                0x00019038                ble_advdata_set.constprop.7
+ .text          0x000199fc       0xd4 /tmp/ccayX4P0.ltrans2.ltrans.o
+ .text.startup  0x00019ad0      0x804 /tmp/ccayX4P0.ltrans2.ltrans.o
+                0x00019ad0                main
+ .text          0x0001a2d4      0xb50 /tmp/ccayX4P0.ltrans3.ltrans.o
+                0x0001a2d8                ble_evt_dispatch.lto_priv.68
+                0x0001add8                on_adv_evt.lto_priv.52
+                0x0001adec                conn_params_error_handler.lto_priv.44
+                0x0001adf4                on_conn_params_evt.lto_priv.43
+                0x0001ae14                sd_app_evt_wait.lto_priv.83
+                0x0001ae18                sd_ble_enable.lto_priv.90
+                0x0001ae1c                sd_ble_gap_device_name_set.lto_priv.88
+                0x0001ae20                sd_ble_gap_ppcp_set.lto_priv.87
+ .text          0x0001ae24      0x920 /tmp/ccayX4P0.ltrans4.ltrans.o
+                0x0001aed8                pstorage_update
+                0x0001af68                pstorage_store
+                0x0001b3d8                sd_ble_gap_disconnect.lto_priv.115
+                0x0001b3dc                clear_operation_execute.lto_priv.135
+                0x0001b56c                flash_operation_success_run.lto_priv.94
+ .text          0x0001b744      0x8ec /tmp/ccayX4P0.ltrans5.ltrans.o
+                0x0001b74c                gattc_context_apply.lto_priv.106
+                0x0001b750                no_service_context_apply.lto_priv.104
+                0x0001b75c                gattc_context_store.lto_priv.110
+                0x0001b760                no_service_context_store.lto_priv.108
+                0x0001b764                storage_operation_dummy_handler.lto_priv.103
+                0x0001b768                softdevice_assertion_handler
+                0x0001b900                dm_pstorage_cb_handler.lto_priv.63
+                0x0001ba94                gatts_context_apply.lto_priv.105
+                0x0001bb80                gattsc_context_apply.lto_priv.107
+                0x0001bc64                gatts_context_store.lto_priv.109
+                0x0001bd50                gattsc_context_store.lto_priv.111
+                0x0001be3c                SWI2_IRQHandler
+                0x0001bed8                sd_softdevice_enable.lto_priv.91
+                0x0001bedc                sd_nvic_EnableIRQ.lto_priv.92
+                0x0001bee0                SystemInit
+                0x0001bf7c                bond_data_load
+ .text          0x0001c030      0x654 /tmp/ccayX4P0.ltrans6.ltrans.o
+                0x0001c03c                update_timeout_handler.lto_priv.50
+                0x0001c0b0                sd_ble_gatts_sys_attr_get.lto_priv.40
+                0x0001c0b4                sd_ble_gatts_sys_attr_set.lto_priv.38
+                0x0001c0b8                sd_ble_gatts_service_changed.lto_priv.39
+                0x0001c0bc                sd_ble_gap_sec_info_reply.lto_priv.114
+                0x0001c0c0                sd_ble_gap_sec_params_reply.lto_priv.113
+                0x0001c0c4                ble_advertising_start
+                0x0001c3a0                conn_params_negotiation.lto_priv.112
+                0x0001c4f8                sd_ble_gap_ppcp_get.lto_priv.84
+                0x0001c4fc                uuid_list_sized_encode.lto_priv.36
+                0x0001c5e4                name_encode.lto_priv.33
+                0x0001c670                sd_ble_gap_appearance_get.lto_priv.35
+                0x0001c674                sd_ble_gap_adv_data_set.lto_priv.32
+                0x0001c678                sd_ble_gap_address_get.lto_priv.34
+                0x0001c67c                sd_ble_uuid_vs_add.lto_priv.85
+                0x0001c680                sd_ble_gatts_service_add.lto_priv.86
+ .text          0x0001c684      0x120 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_udivsi3.o)
+                0x0001c684                __udivsi3
+                0x0001c684                __aeabi_uidiv
+                0x0001c790                __aeabi_uidivmod
+ .text          0x0001c7a4      0x1e0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_divsi3.o)
+                0x0001c7a4                __aeabi_idiv
+                0x0001c7a4                __divsi3
+                0x0001c970                __aeabi_idivmod
+ .text          0x0001c984        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_dvmd_tls.o)
+                0x0001c984                __aeabi_ldiv0
+                0x0001c984                __aeabi_idiv0
+ .text          0x0001c988       0x54 _build/gcc_startup_nrf51.o
+                0x0001c988                Reset_Handler
+                0x0001c9d0                NMI_Handler
+                0x0001c9d2                HardFault_Handler
+                0x0001c9d4                SVC_Handler
+                0x0001c9d6                PendSV_Handler
+                0x0001c9d8                SysTick_Handler
+                0x0001c9da                TIMER2_IRQHandler
+                0x0001c9da                SPI0_TWI0_IRQHandler
+                0x0001c9da                RTC0_IRQHandler
+                0x0001c9da                GPIOTE_IRQHandler
+                0x0001c9da                POWER_CLOCK_IRQHandler
+                0x0001c9da                RADIO_IRQHandler
+                0x0001c9da                LPCOMP_IRQHandler
+                0x0001c9da                SWI4_IRQHandler
+                0x0001c9da                TEMP_IRQHandler
+                0x0001c9da                QDEC_IRQHandler
+                0x0001c9da                UART0_IRQHandler
+                0x0001c9da                SWI5_IRQHandler
+                0x0001c9da                TIMER0_IRQHandler
+                0x0001c9da                TIMER1_IRQHandler
+                0x0001c9da                ECB_IRQHandler
+                0x0001c9da                Default_Handler
+                0x0001c9da                ADC_IRQHandler
+                0x0001c9da                SWI3_IRQHandler
+                0x0001c9da                CCM_AAR_IRQHandler
+                0x0001c9da                WDT_IRQHandler
+                0x0001c9da                RNG_IRQHandler
+                0x0001c9da                SPI1_TWI1_IRQHandler
+                0x0001c9da                SWI1_IRQHandler
+ .text.memcmp   0x0001c9dc       0x1e /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcmp.o)
+                0x0001c9dc                memcmp
+ .text.memcpy   0x0001c9fa       0x12 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcpy.o)
+                0x0001c9fa                memcpy
+ .text.strlen   0x0001ca0c        0xe /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-strlen.o)
+                0x0001ca0c                strlen
+ *(.init)
+ *fill*         0x0001ca1a        0x2 
+ .init          0x0001ca1c        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
+                0x0001ca1c                _init
+ .init          0x0001ca20        0x8 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
+ *(.fini)
+ .fini          0x0001ca28        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
+                0x0001ca28                _fini
+ .fini          0x0001ca2c        0x8 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+ *crtbegin.o(.dtors)
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o *crtend?.o) .dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+ *(.rodata*)
+ .rodata.str1.1
+                0x0001ca34        0x2 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-impure.o)
+ *fill*         0x0001ca36        0x2 
+ .rodata._global_impure_ptr
+                0x0001ca38        0x4 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-impure.o)
+                0x0001ca38                _global_impure_ptr
+ .rodata        0x0001ca3c       0x24 /tmp/ccayX4P0.ltrans2.ltrans.o
+                0x0001ca3c                swap_sub_state_sm_lut.5887.lto_priv.123
+ .rodata.str1.4
+                0x0001ca60       0x14 /tmp/ccayX4P0.ltrans2.ltrans.o
+ .rodata        0x0001ca74      0x118 /tmp/ccayX4P0.ltrans3.ltrans.o
+ .rodata.m_service_context_store
+                0x0001cb8c       0x10 /tmp/ccayX4P0.ltrans3.ltrans.o
+ .rodata        0x0001cb9c       0x14 /tmp/ccayX4P0.ltrans4.ltrans.o
+ .rodata        0x0001cbb0       0x14 /tmp/ccayX4P0.ltrans5.ltrans.o
+ *(.eh_frame*)
+                0x0001cbc4                . = ALIGN (0x4)
+
+.glue_7         0x0001cbc4        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x0001cbc4        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x0001cbc4        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x0001cbc4        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x0001cbc4        0x0
+ .iplt          0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+
+.ARM.extab      0x0001cbc4        0x0
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+                0x0001cbc4                . = ALIGN (0x4)
+                0x0001cbc4                __exidx_start = .
+
+.ARM.exidx      0x0001cbc4        0x8
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+ .ARM.exidx     0x0001cbc4        0x8 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o
+ .ARM.exidx     0x0001cbcc        0x0 _build/gcc_startup_nrf51.o
+                                  0x8 (size before relaxing)
+                0x0001cbcc                . = ALIGN (0x4)
+                0x0001cbcc                __exidx_end = .
+                0x0001cbcc                __etext = .
+
+.rel.dyn        0x0001cbcc        0x0
+ .rel.iplt      0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+
+.data           0x20002000       0x68 load address 0x0001cbcc
+                0x20002000                __data_start__ = .
+ *(vtable)
+ *(.data*)
+ .data.impure_data
+                0x20002000       0x60 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-impure.o)
+ .data          0x20002060        0x4 /tmp/ccayX4P0.ltrans2.ltrans.o
+ .data          0x20002064        0x4 /tmp/ccayX4P0.ltrans3.ltrans.o
+                0x20002068                . = ALIGN (0x4)
+                0x20002068                PROVIDE (__preinit_array_start, .)
+ *(.preinit_array)
+                0x20002068                PROVIDE (__preinit_array_end, .)
+                0x20002068                . = ALIGN (0x4)
+                0x20002068                PROVIDE (__init_array_start, .)
+ *(SORT(.init_array.*))
+ *(.init_array)
+                0x20002068                PROVIDE (__init_array_end, .)
+                0x20002068                . = ALIGN (0x4)
+                0x20002068                PROVIDE (__fini_array_start, .)
+ *(SORT(.fini_array.*))
+ *(.fini_array)
+                0x20002068                PROVIDE (__fini_array_end, .)
+ *(.jcr)
+                0x20002068                . = ALIGN (0x4)
+                0x20002068                __data_end__ = .
+
+.igot.plt       0x20002068        0x0 load address 0x0001cc34
+ .igot.plt      0x00000000        0x0 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+
+.bss            0x20002068      0x62c load address 0x0001cc34
+                0x20002068                . = ALIGN (0x4)
+                0x20002068                __bss_start__ = .
+ *(.bss*)
+ .bss           0x20002068       0x10 /tmp/ccayX4P0.ltrans0.ltrans.o
+ .bss           0x20002078       0x38 /tmp/ccayX4P0.ltrans1.ltrans.o
+                0x20002078                m_advdata.lto_priv.41
+ .bss           0x200020b0      0x2f4 /tmp/ccayX4P0.ltrans2.ltrans.o
+                0x200020b0                m_state.lto_priv.117
+                0x200020b4                m_num_of_command_retries.lto_priv.120
+                0x200020b8                m_swap_sub_state.lto_priv.118
+                0x200020bc                m_app_data_size.lto_priv.119
+                0x200020c0                m_error_handler.lto_priv.97
+                0x200020c4                m_evt_schedule_func.lto_priv.73
+                0x200020c8                m_user_array_size.lto_priv.132
+                0x20002294                mp_timer_id_head.lto_priv.131
+                0x20002298                m_ticks_elapsed_q_read_ind.lto_priv.133
+                0x20002299                m_ticks_elapsed_q_write_ind.lto_priv.134
+                0x2000229c                m_ticks_latest.lto_priv.130
+                0x200022f0                m_current_page_id.lto_priv.116
+                0x200022f4                m_num_of_bytes_written.lto_priv.121
+                0x200022f8                m_irk_index_table.lto_priv.101
+                0x200022ff                m_module_initialized.lto_priv.100
+ .bss           0x200023a4        0x8 /tmp/ccayX4P0.ltrans4.ltrans.o
+                0x200023a4                m_head_word_size.lto_priv.128
+                0x200023a8                m_tail_word_size.lto_priv.129
+ .bss           0x200023ac      0x178 /tmp/ccayX4P0.ltrans5.ltrans.o
+                0x200023ac                m_flags.lto_priv.42
+                0x200023b0                m_app_table.lto_priv.59
+                0x200023c8                m_gatts_table.lto_priv.62
+                0x200023ec                m_application_table.lto_priv.60
+                0x200023f8                m_storage_handle.lto_priv.64
+                0x20002400                m_peer_table.lto_priv.65
+                0x200024c4                m_peer_addr_update.lto_priv.66
+                0x200024c8                m_bond_table.lto_priv.102
+                0x200024e4                m_connection_table.lto_priv.61
+                0x200024f0                m_app_context_table.lto_priv.67
+                0x2000250c                m_evt_schedule_func.lto_priv.74
+                0x20002510                m_softdevice_enabled.lto_priv.75
+                0x20002514                m_sys_evt_handler.lto_priv.69
+                0x20002518                m_ble_evt_handler.lto_priv.70
+                0x2000251c                m_ble_evt_buffer_size.lto_priv.72
+                0x20002520                mp_ble_evt_buffer.lto_priv.71
+ .bss           0x20002524      0x170 /tmp/ccayX4P0.ltrans6.ltrans.o
+                0x20002524                m_conn_handle.lto_priv.48
+                0x20002526                m_update_count.lto_priv.49
+                0x20002528                m_conn_params_config.lto_priv.45
+                0x20002544                m_preferred_conn_params.lto_priv.47
+                0x2000254c                m_adv_mode_current.lto_priv.53
+                0x20002550                m_cmd_queue.lto_priv.58
+                0x2000261c                m_advertising_start_pending.lto_priv.76
+                0x20002620                m_peer_address.lto_priv.56
+                0x20002628                m_adv_modes_config.lto_priv.55
+                0x2000264c                m_evt_handler.lto_priv.54
+                0x20002651                m_adv_evt.lto_priv.98
+                0x20002652                m_whitelist_temporarily_disabled.lto_priv.96
+                0x20002654                m_whitelist.lto_priv.57
+                0x20002664                m_current_conn_params.lto_priv.99
+                0x2000266c                mp_users.lto_priv.51
+                0x20002670                m_conn_params_timer_id_data.lto_priv.77
+                0x20002690                m_change_param.lto_priv.46
+ *(COMMON)
+                0x20002694                . = ALIGN (0x4)
+                0x20002694                __bss_end__ = .
+
+.heap           0x20002698      0x800
+                0x20002698                __end__ = .
+                0x20002698                end = __end__
+ *(.heap*)
+ .heap          0x20002698      0x800 _build/gcc_startup_nrf51.o
+                0x20002698                __HeapBase
+                0x20002e98                __HeapLimit = .
+
+.stack_dummy    0x20002698      0x800
+ *(.stack*)
+ .stack         0x20002698      0x800 _build/gcc_startup_nrf51.o
+                0x20004000                __StackTop = (ORIGIN (RAM) + 0x2000)
+                0x20003800                __StackLimit = (__StackTop - SIZEOF (.stack_dummy))
+                0x20004000                PROVIDE (__stack, __StackTop)
+                0x00000001                ASSERT ((__StackLimit >= __HeapLimit), region RAM overflowed with stack)
+OUTPUT(_build/nrf51422_xxaa_s110.out elf32-littlearm)
+
+.ARM.attributes
+                0x00000000       0x28
+ .ARM.attributes
+                0x00000000       0x1e /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
+ .ARM.attributes
+                0x0000001e       0x1b /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o
+ .ARM.attributes
+                0x00000039       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-exit.o)
+ .ARM.attributes
+                0x00000065       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-impure.o)
+ .ARM.attributes
+                0x00000091       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-init.o)
+ .ARM.attributes
+                0x000000bd       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memset.o)
+ .ARM.attributes
+                0x000000e9       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libnosys.a(_exit.o)
+ .ARM.attributes
+                0x00000115       0x2f /tmp/ccayX4P0.ltrans0.ltrans.o
+ .ARM.attributes
+                0x00000144       0x2f /tmp/ccayX4P0.ltrans1.ltrans.o
+ .ARM.attributes
+                0x00000173       0x2f /tmp/ccayX4P0.ltrans2.ltrans.o
+ .ARM.attributes
+                0x000001a2       0x2f /tmp/ccayX4P0.ltrans3.ltrans.o
+ .ARM.attributes
+                0x000001d1       0x2f /tmp/ccayX4P0.ltrans4.ltrans.o
+ .ARM.attributes
+                0x00000200       0x2f /tmp/ccayX4P0.ltrans5.ltrans.o
+ .ARM.attributes
+                0x0000022f       0x2f /tmp/ccayX4P0.ltrans6.ltrans.o
+ .ARM.attributes
+                0x0000025e       0x1e /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_udivsi3.o)
+ .ARM.attributes
+                0x0000027c       0x1e /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_divsi3.o)
+ .ARM.attributes
+                0x0000029a       0x1e /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_dvmd_tls.o)
+ .ARM.attributes
+                0x000002b8       0x1b _build/gcc_startup_nrf51.o
+ .ARM.attributes
+                0x000002d3       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcmp.o)
+ .ARM.attributes
+                0x000002ff       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcpy.o)
+ .ARM.attributes
+                0x0000032b       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-strlen.o)
+ .ARM.attributes
+                0x00000357       0x1e /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
+
+.comment        0x00000000       0x70
+ .comment       0x00000000       0x70 /tmp/ccayX4P0.ltrans0.ltrans.o
+                                 0x71 (size before relaxing)
+ .comment       0x00000000       0x71 /tmp/ccayX4P0.ltrans1.ltrans.o
+ .comment       0x00000000       0x71 /tmp/ccayX4P0.ltrans2.ltrans.o
+ .comment       0x00000000       0x71 /tmp/ccayX4P0.ltrans3.ltrans.o
+ .comment       0x00000000       0x71 /tmp/ccayX4P0.ltrans4.ltrans.o
+ .comment       0x00000000       0x71 /tmp/ccayX4P0.ltrans5.ltrans.o
+ .comment       0x00000000       0x71 /tmp/ccayX4P0.ltrans6.ltrans.o
+
+.debug_frame    0x00000000      0x148
+ .debug_frame   0x00000000       0x28 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-exit.o)
+ .debug_frame   0x00000028       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-init.o)
+ .debug_frame   0x00000054       0x20 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memset.o)
+ .debug_frame   0x00000074       0x20 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libnosys.a(_exit.o)
+ .debug_frame   0x00000094       0x20 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_udivsi3.o)
+ .debug_frame   0x000000b4       0x20 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/libgcc.a(_divsi3.o)
+ .debug_frame   0x000000d4       0x2c /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcmp.o)
+ .debug_frame   0x00000100       0x28 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-memcpy.o)
+ .debug_frame   0x00000128       0x20 /arm/opt/gcc-arm/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/libc_nano.a(lib_a-strlen.o)

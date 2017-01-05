@@ -1,0 +1,3 @@
+KERNEL=="ttyACM[0-9]*",		GROUP="users", MODE="0666"
+KERNEL=="ttyUSB[0-9]*",		GROUP="users", MODE="0666"
+

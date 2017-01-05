@@ -1,0 +1,196 @@
+#!/usr/bin/env python
+
+import sys, time, datetime, serial
+from pyBusPirateLite.I2C import *
+
+def bcd(val):
+  # return BCD form of value
+  assert type(val) == int and 0 <= val <= 99 
+  high,low  = val // 10, val % 10
+  return high << 4 | low
+
+def inversebcd(val):
+  # convert BCD to integer
+  return 10*(val>>4) + (val&0xf)
+
+def curtime():
+  '''
+   get current time as a time.struct_time object, 
+   which has these attributes:
+  
+      tm_year  (like 1999, 2021) 
+      tm_mon   (1-12)
+      tm_mday  (1-31)
+      tm_hour  (0-23)
+      tm_min   (0-59)
+      tm_sec   (0-61) (retry if 60 or 61)
+      tm_wday  (0-6)  (0 = Monday) 
+
+   produce a byte string of the form
+    
+      SMHwDmY (seven bytes)
+
+      S        BCD seconds
+      M        BCD minutes
+      H        BCD hours
+      w        Weekday 1-7
+      D        day of month, 1-31
+      m        Month 1-12, but high order bit could be century carry bit
+      Y        Year 0-99
+  '''
+  tm = time.localtime()
+  R = list()
+  while tm.tm_sec > 59: 
+    time.sleep(0.5)
+    tm = time.localtime() # just in case
+  R.append(bcd(tm.tm_sec))
+  R.append(bcd(tm.tm_min))
+  R.append(0x40|bcd(tm.tm_hour))  # 0x40 is 24-hour clock setting
+  R.append(bcd(1+tm.tm_wday))
+  R.append(bcd(tm.tm_mday))
+  R.append(bcd(tm.tm_mon))
+  R.append(bcd(tm.tm_year%100))
+  return R
+
+class Pirate(object):
+  # operations on bus pirate
+
+  def addrscan(self):
+    i2c,Found = self.i2c,list()
+    def isReserved(b):
+      # True if b is a reserved or invalid I2C address
+      if not (128 > b > 1): return True 
+      if (b>>1) in (1,0b10,0b11): return True
+      if (b>>3) in (0b1,0b11110,0b11111): return True 
+      return False
+    def genaddr():
+      for b in range(128):
+        if isReserved(b): continue
+        c,d = chr(b<<1), chr(b<<1 | 1)
+        yield c
+        yield d
+    T = genaddr()
+    for v in T:
+      i2c.send_start_bit()
+      i2c.port.write("\x10")
+      i2c.port.write(v)
+      i2c.send_stop_bit()
+      r = i2c.port.read(2)
+      if r[0] == "\x00": Found.append(v)
+    return [ ord(c) for c in Found ]
+
+  def eepromwrite(self,addr,value):
+    i2c = self.i2c
+    i2c.send_start_bit()
+    i2c.bulk_trans(1,[0xAE])
+    i2c.bulk_trans(2,[addr>>8,addr&0xff])
+    i2c.bulk_trans(1,[value])
+    i2c.send_stop_bit()
+ 
+  def randread(self,addr):
+    i2c = self.i2c
+    i2c.send_start_bit()
+    i2c.bulk_trans(1,[0xAE])
+    i2c.bulk_trans(2,[addr>>8,addr&0xff])
+    i2c.send_start_bit()
+    i2c.bulk_trans(1,[0xAF])
+    r = i2c.read_byte()
+    i2c.send_stop_bit()
+    return ord(r)
+
+  def clockset(self):
+    i2c = self.i2c
+    clockdata = curtime() 
+    sys.stdout.write("Clockdata:")
+    for b in clockdata: sys.stdout.write(" {0:02x}".format(b))
+    sys.stdout.write("\n")
+    for i in range(len(clockdata)):
+      i2c.send_start_bit()
+      i2c.bulk_trans(2,[0xD0,i])
+      i2c.bulk_trans(1,[clockdata[i]])
+      i2c.send_stop_bit()
+    # also set the clock to start ticking
+    i2c.send_start_bit()
+    i2c.bulk_trans(4,[0xD0,0x0E,0x00,0x08])
+    i2c.send_stop_bit()
+    self.clear()
+
+  def clockread(self):
+    clockdata = list()
+    i2c = self.i2c
+    i2c.send_start_bit()
+    i2c.bulk_trans(2,[0xD0,0x00])
+    i2c.send_start_bit()
+    i2c.bulk_trans(1,[0xD1])
+    for i in range(6): 
+      clockdata.append(inversebcd(ord(i2c.read_byte())))
+      i2c.send_ack()
+    clockdata.append(inversebcd(ord(i2c.read_byte())))
+    i2c.send_nack()
+    i2c.send_stop_bit()
+    second,minute,hour,weekday,daynum,month,year = clockdata
+    D = datetime.datetime(year=2000+year,month=month,day=daynum,hour=hour,minute=minute,second=second)
+    return D
+
+  def readtemperature(self):
+    temperature = list()
+    i2c = self.i2c
+    i2c.send_start_bit()
+    i2c.bulk_trans(2,[0xD0,0x11])
+    i2c.send_start_bit()
+    i2c.bulk_trans(1,[0xD1])
+    temperature.append(ord(i2c.read_byte()))
+    i2c.send_ack()
+    temperature.append(ord(i2c.read_byte()))
+    i2c.send_nack()
+    i2c.send_stop_bit()
+    return temperature
+
+  def clear(self):
+    self.i2c.port.read(32)
+     
+  def __init__(self,pirateport):
+
+    #### Step 1 -- Connect to Bus Pirate ####
+    try: 
+      i2c = I2C(pirateport,115200)
+    except:
+      sys.stderr.write("Unable to connect to '{0}'\n".format(pirateport))
+      sys.exit(1)
+
+    #### Step 2 -- I2C mode ####
+    if not (i2c.BBmode() and i2c.enter_I2C()):
+      sys.stderr.write("Unable to set raw I2C Mode\n")
+      sys.exit(1)
+
+    #### Step 3 -- Supply Power, Pullups, and Speed ####
+    if not i2c.cfg_pins(I2CPins.POWER | I2CPins.PULLUPS):
+      sys.stderr.write("Unable to set I2C power and pullups\n")
+      sys.exit(1)
+    if not i2c.set_speed(I2CSpeed._5KHZ):
+      sys.stderr.write("Unable to set I2C speed\n")
+      sys.exit(1)
+    
+    #### Step 4 -- set timeout and save as instance variable ####
+    i2c.timeout(0.2)
+    self.i2c = i2c
+
+    #### Step 5 -- validate existence of addresses for DS3231 ####
+    # 0xAE(0x57 W) 0xAF(0x57 R) 0xD0(0x68 W) 0xD1(0x68 R) 
+    addrlist = self.addrscan()
+    if not ( 0xAE in addrlist and 0xAF in addrlist ):
+      sys.stderr.write("Unable to find AT24C32 memory chip at address 0x57\n")
+      sys.exit(1)
+    if not ( 0xD0 in addrlist and 0xD1 in addrlist ):
+      sys.stderr.write("Unable to find DS3231 RTC chip at address 0x68\n")
+      sys.exit(1)
+
+      
+    
+def main():
+  P = Pirate("/dev/ttyUSB0")
+  P.clockset()
+  P.clear()
+  sys.stdout.write("DS3231 clock set\n")
+
+main()

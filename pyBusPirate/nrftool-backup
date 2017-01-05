@@ -1,0 +1,776 @@
+#!/usr/bin/env python
+from pyBusPirateLite.BitBang import *
+import time, sys
+
+# BY TED HERMAN
+
+# see http://dangerousprototypes.com/docs/Raw-wire_(binary) for details
+# on the following raw-wire Bus Pirate commands
+CMD_READ_BYTE =     "\x06"
+CMD_READ_BIT =      "\x07"
+CMD_WRITE_BYTES =   "\x10"
+CMD_CLOCK_TICKS =   "\x20"
+CMD_WRITE_BITS=     "\x30"
+CMD_CONFIG_PERIPH = "\x40"
+CMD_SET_SPEED =     "\x60"
+CMD_SET_CONFIG =    "\x80"
+
+# an enumeration of ARM and nRF51 registers
+IDCODE   = 1 
+ABORT    = 2
+CTRLSTAT = 3
+RESEND   = 4  
+SELECT   = 5 
+RDBUF    = 6 
+CSW      = 7     
+TAR      = 8
+DRW      = 9 
+IDR      = 10 
+CFG      = 11 
+BD0      = 12 
+BD1      = 13 
+BD2      = 14 
+BD3      = 15 
+BASE     = 16
+CODEPAGESIZE = 17
+CODESIZE = 18
+CLEN0    = 19
+# SCS registers
+DHCSR    = 20
+# NVMC registers
+NVMC_READY = 21
+NVMC_CONFIG = 22
+NVMC_ERASEPAGE = 23
+NVMC_ERASEALL = 24
+
+# modes of port/memory
+DP       = 0
+AP       = 1
+FICR     = 2
+UICR     = 3
+SCS      = 4
+NVMC     = 5
+
+class regdesc(object):
+  def __init__(self,Id,Addr,Area):
+    assert Area in (DP,AP,FICR,UICR,SCS,NVMC)
+    self.Id,self.Addr,self.Area = Id, Addr, Area 
+    self.Base = {DP:0,AP:0,FICR:0x10000000,UICR:0x10001000,
+                 SCS:0xE000EDF0,NVMC:0x4001e000}[Area]
+
+regtable = [
+  regdesc(IDCODE,0,DP), 
+  regdesc(ABORT,0,DP), 
+  regdesc(CTRLSTAT,4,DP), 
+  regdesc(SELECT,8,DP), 
+  regdesc(RDBUF,0x0c,DP), 
+  regdesc(CSW,0,AP), 
+  regdesc(TAR,4,AP), 
+  regdesc(DRW,0x0c,AP), 
+  regdesc(BASE,0xf8,AP),
+  regdesc(IDR,0xfc,AP),
+  regdesc(CFG,0xf4,AP),
+  regdesc(BD0,0x10,AP),
+  regdesc(BD1,0x14,AP),
+  regdesc(BD2,0x18,AP),
+  regdesc(BD3,0x1c,AP),
+  regdesc(CODEPAGESIZE,0x010,FICR),
+  regdesc(CODESIZE,0x014,FICR),
+  regdesc(CLEN0,0x028,FICR),
+  regdesc(DHCSR,0,SCS),
+  regdesc(NVMC_READY,0x400,NVMC),
+  regdesc(NVMC_CONFIG,0x504,NVMC),
+  regdesc(NVMC_ERASEPAGE,0x508,NVMC),
+  regdesc(NVMC_ERASEALL,0x50c,NVMC),
+  ] 
+
+Current = True # another enumeration for readability
+banks_last = { Current: None }
+tar_last = { Current: None }
+
+'''
+  Additional information on AHB-AP registers:
+
+    The AHB-AP is selected by writing 0 to the APSEL field 
+    of the SELECT register. This has to be performed
+    before using the AHB-AP. 
+
+     CSW (bits 31..0)
+        bits 11-8 -- mode (must be zero)
+        bit  7    -- transfer in progress (zero means idle) 
+        bit  6    -- device enable
+        bits 5-4  -- AddrInc (whether Auto-Increment in effect)
+        bits 2-0  -- size
+
+     TAR register - the address register for operations  
+
+        32-bit address for debug read/write, and can auto-increment
+         
+     DRW register -- Data Read/Write   
+
+        data to be written, or data read
+
+     IDR register -- Identification Register
+
+        To read this register, the APBANKSEL field should be set to 0xF. 
+        And then IDR register can be read with address 0x0C. 
+
+     CFG register -- Coniguration Register
+
+        To read this register, the APBANKSEL field should be set to 0xF. 
+        And then CFG register can be read with address 0x04. Bit 0 is the only 
+        interesting one, it means "big endian" if 1. 
+
+
+  Additional information on DP registers:
+
+     AP ABORT (bits 31..0)
+         
+        bits 4..0 -- writing 1's in these bits clears various "stuck" 
+                     flags on the MCU, like a reset
+
+     CTRL/STAT (bits 31..0)
+   
+        many bits defined in here, see the manual for all of them;
+        the program must write 1 to bits 30 and 28 before using the
+        AHB-AP bank of registers
+
+     AP SELECT register (bits 31..0)
+    
+        bits 31-24 -- which AP is selected
+        bits 7-4   -- which 4-register bank is selected
+ 
+     RDBUF quote from the manual:
+
+       On a SW-DP, performing a read of RDBUF captures data 
+       from the AP, presented as the result of a previous read, 
+       without initiating a new AP transaction. This means that 
+       reading the Read Buffer returns the result of the last AP 
+       read access, without generating a new AP access.
+
+       After you have read the Read Buffer, its contents are no longer 
+       valid. The result of a second read of the Read
+       Buffer is UNPREDICTABLE.  If you require the value from an AP 
+       register read, that read must be followed by one of:
+        -- A second AP register read, with the appropriate AP 
+           selected as the current AP.
+        -- A read of the DP Read Buffer.
+       This second access, to the AP or the DP depending on which 
+       option you use, stalls until the result of the original AP read 
+       is available       
+
+'''
+
+global args, Otrace, B
+args, Otrace, B = None, list(), None 
+
+def setByArgs():
+  global B, args 
+  import argparse
+  parser = argparse.ArgumentParser(description='nRF51 tool in Python')
+  parser.add_argument("function",default=None,help='function is: program, info, masserase, download')
+  parser.add_argument('dev', metavar='device', help='system name for buspirate device, eg /dev/ttyUSB0')
+  parser.add_argument('--address',metavar='address',nargs=1,
+            default="0",help='upload start address for program function, or download start address')
+  parser.add_argument('--progfile',metavar='progfile',nargs=1,
+            default=None,help='binary file input (program to upload)')
+  parser.add_argument('--downloadfile',metavar='downloadfile',nargs=1,
+            default=None,help='file to store downloaded binary')
+  parser.add_argument('--downloadsize',metavar='downloadfile',nargs=1,
+            default="0",help='size limit on download size')
+  parser.add_argument('--debug',metavar='debug', nargs=1,
+	    default=False, help='show low level debugging information')
+  args = parser.parse_args()
+  args.debug = args.debug == ["True"] 
+  if args.function not in "program info masserase download".split():
+    sys.stderr.write("Command error: no valid function specified\n")
+    sys.stderr.write("\t(try one of: program, info, masserase, download)\n")
+    sys.exit(1)
+  try:
+    B = BBIO(p=args.dev,s=115200,t=5)
+  except:
+    sys.stderr.write("Device error: {0} was not available (check permissions, etc)\n".format(args.dev))
+    sys.exit(1)
+  if args.address:   args.address = args.address[0]
+  if args.progfile:  args.progfile = args.progfile[0]
+  if args.downloadfile: args.downloadfile = args.downloadfile[0]
+  if args.downloadsize: args.downloadsize = args.downloadsize[0]
+  if args.debug: args.debug = args.debug[0]
+  if args.address in ("s110","S110"): args.address = "0x00018000"
+  if args.address in ("s120","S120"): args.address = "0x0001c000"
+  s,base = args.address.strip(),10
+  if s.startswith("0x"): s,base = s[2:],16 
+  try:
+    args.address = int(s,base)
+  except:
+    sys.stderr.write("Error trying to parse address '{0}'\n".format(args.address))
+    sys.exit(1)
+  if args.function == "program":
+    if not args.progfile:
+      sys.stderr.write("missing --progfile for program operation\n".format(args.address))
+      sys.exit(1)
+  if args.function == "download":
+    if not args.downloadfile:
+      sys.stderr.write("missing --downloadfile for download operation\n".format(args.address))
+      sys.exit(1)
+    try:
+      with open(args.downloadfile,'wb') as F:
+        F.write("\x00")
+    except:
+      sys.stderr.write("Error trying to write downloadfile '{0}'\n".format(args.downloadfile))
+      sys.exit(1)
+    s,base = args.downloadsize.strip(),10
+    if s.startswith("0x"): s,base = s[2:],16 
+    try:
+      args.downloadsize = int(s,base)
+    except:
+      sys.stderr.write("Error trying to parse downloadsize '{0}'\n".format(args.downloadsize))
+      sys.exit(1)
+
+def portwrite(value):
+  if args.debug and value == "\x21":
+     for c in Otrace: sys.stdout.write("{0:02x}".format(ord(c)))
+     sys.stdout.write("{0:02x}\n".format(ord(value)))
+     Otrace[:] = []
+  elif args.debug: 
+     for c in value: Otrace.append(c)
+  B.port.write(value)
+
+def BBclear():
+  "Kind of an unknown state clearing of the BusPirate port"
+  while B.port.inWaiting():
+    b = B.port.read(1)
+
+def BBgetacks(n,validate=True):
+  "Consume n acks by reading the port n times"
+  acklist = list()
+  for i in range(n): acklist.append(B.response(1))
+  # print "Acks read =", acklist
+  if all(e for e in acklist): return
+  sys.stdout.write("Error - not all of {0} acks were 1\n".format(n))
+  sys.exit(1)
+
+def BBgetdata(n):
+  "Consume n inputs and display"
+  datalist = list()
+  for i in range(n): datalist.append(B.response(1))
+  sys.stdout.write("{0} data items = {1}\n".format(n,datalist))
+
+def setupPirate():
+  "Establish Bus Pirate BitBang Connection"
+  assert B.resetBP()
+  assert B.BBmode()
+  assert B.enter_rawwire()
+  BBwriteGetAck("\x8a\x63\x48")    # configure Bus Pirate
+  # 8a = configure 3.3v, 2-wire, LSB first 
+  # 63 = set 400kHz timing
+  # 48 = configure as peripherals have power 
+
+def BBwriteGetAck(bytestr):  
+  "write contents of bytestr, collect acks"
+  portwrite(bytestr)
+  BBgetacks(len(bytestr))
+
+def BBwriteCmd(command):
+  "write command, collect acks"
+  portwrite(CMD_WRITE_BYTES)       # default is 1 byte, which is correct
+  portwrite(command)
+  BBgetacks(2) 
+  portwrite(CMD_READ_BIT*3)
+  # NOTE - ARM manual shows timing diagrams with a turnaround
+  # inserted here, but is it really needed? 
+  B.port.flush()
+  datalist = list()
+  for i in range(3): datalist.append(B.response(1))
+  # if tuple(datalist) != (1,0,0):
+  #    print "datalist =", datalist
+  assert tuple(datalist) == (1,0,0)
+
+def BBwriteBytes(bytestring):
+  "send a string of bytes on the Bus Pirate"
+  assert 0 < len(bytestring) <= 16
+  command = chr( ord(CMD_WRITE_BYTES) | len(bytestring)-1 )
+  portwrite(command)
+  portwrite(bytestring)
+  BBgetacks(1+len(bytestring)) 
+
+def ARM_init():
+  '''
+  According to SiLabs Document AN0062 
+   "Programming Internal Flash Over the Serial Wire args.debug Interface"
+  there are four steps to initialize ARM programming:
+    1. perform a line reset
+    2. send the JTAG-to-SWD switching sequence
+    3. perform a line reset 
+    4. read the ICODE register
+  where a line reset is performed by clocking at least 50 cycles with
+  the SWDIO line kept high 
+  '''
+  BBwriteBytes("\xff"*7)              # line reset
+  BBwriteBytes("\x9e\xe7")            # JTAG-to-SWD (LSB first) 
+  BBwriteBytes("\xff"*7)              # line reset
+  BBwriteBytes("\x00")                # switch to bitbang mode 
+  # R = ARMSWD_command(Register=IDCODE,DP=True,Read=True)
+  R = Read(IDCODE)
+  assert R == 0xbb11477
+
+def revbits(x):
+  #print "revbits of", hex(ord(x))
+  x = ord(x)
+  r = x & 1 
+  for i in range(7):
+    r = r << 1
+    x = x >> 1 
+    r = r | (x & 1) 
+  #print "revbits result", hex(r) 
+  return chr(r)
+    
+def ARMSWD_command(Register=0,Value=0,DP=True,Read=True):
+  # Value - reverse order (LSB first) and convert to byte string
+  byteString  = chr(Value & 0xff)
+  byteString += chr((Value >> 8) & 0xff)
+  byteString += chr((Value >> 16) & 0xff)
+  byteString += chr((Value >> 24) & 0xff)
+  basecmd = "\x81"
+  addrbits = {0:"\x00", 4:"\x10", 8:"\x08", 0xC:"\x18"}[Register]
+  dpap = "\x00"
+  if not DP: dpap = "\x40"
+  oper = "\x00"
+  if Read:   oper = "\x20"
+  parity = ord(addrbits) | ord(dpap) | ord(oper) 
+  parity = chr(parity >> 3)
+  if parity in ("\x00","\x0f","\x0a","\x09","\x0c","\x06","\x05","\x03"):
+     parity = "\x00"
+  else: parity = "\x04"
+  command = ord(basecmd) | ord(parity) | ord(dpap) | ord(addrbits) | ord(oper)
+  command = chr(command)
+  if Read:
+     BBwriteCmd(revbits(command))
+     R = readWordParity()
+     portwrite(chr(ord(CMD_CLOCK_TICKS)|0x01))
+     BBgetacks(1) 
+     return R
+  else:
+     BBwriteCmd(revbits(command))
+     portwrite(chr(ord(CMD_CLOCK_TICKS)|0x01))
+     BBgetacks(1) 
+     BBwriteBytes(byteString)
+     portwrite(CMD_WRITE_BITS) 
+     if Parity(Value): portwrite("\x80")
+     else:             portwrite("\x00")
+     BBgetacks(2)
+
+def ARMdpRead(Register=0):
+  v = Register
+  R = ARMSWD_command(Register=v,Value=0,DP=True,Read=True)
+  if args.debug: sys.stdout.write("Read of DP Register {0:02x} ".format(v))
+  if args.debug: sys.stdout.write("--> {0:08x}\n".format(R))
+  return R
+
+def ARMapRead(Register=0):
+  v = Register
+  R = ARMSWD_command(Register=v,Value=0,DP=False,Read=True)
+  if args.debug: sys.stdout.write("Read of AP Register {0:02x} ".format(v))
+  if args.debug: sys.stdout.write("--> {0:08x}\n".format(R))
+  return R
+
+def ARMdpWrite(Register=0,Value=None):
+  v,w = Register,Value
+  R = ARMSWD_command(Register=v,Value=w,DP=True,Read=False)
+  if args.debug: sys.stdout.write("Write of DP Register {0:02x} ".format(v))
+  if args.debug: sys.stdout.write("<-- {0:08x}\n".format(w))
+  return R
+
+def ARMapWrite(Register=0,Value=None):
+  v,w = Register,Value
+  R = ARMSWD_command(Register=v,Value=w,DP=False,Read=False)
+  if args.debug: sys.stdout.write("Write of AP Register {0:02x} ".format(v))
+  if args.debug: sys.stdout.write("<-- {0:08x}\n".format(w))
+  return R
+
+def Parity(word):
+  parity = word
+  parity = parity ^ (parity >> 16)
+  parity = parity ^ (parity >> 8)
+  parity = parity ^ (parity >> 4)
+  parity = parity ^ (parity >> 2)
+  parity = parity ^ (parity >> 1)
+  return parity & 0x01
+
+def readWordParity():
+  for i in range(4): portwrite(CMD_READ_BYTE)
+  portwrite(CMD_READ_BIT)
+  B.port.flush()
+  word = B.response(4)[::-1]
+  word = sum( ord(word[i])*256**(3-i) for i in range(4) ) 
+  parity = B.response(1)
+  assert Parity(word) == parity
+  return word
+
+def AHB_AP_init():
+  Write(ABORT,0x1e)
+  Write(SELECT,0)
+  Write(CTRLSTAT,0x50000000)
+  R = Read(CTRLSTAT)
+  assert R == 0xf0000000L
+  R = Read(IDR)
+  assert R == 0x4770021
+  R = Read(CSW)
+  Write(CSW,0x03000052)
+  R = Read(CSW)
+  assert R == 0x03000052
+
+def Read(register):
+  for e in regtable:   
+    if e.Id == register:
+      break 
+  assert e.Id == register
+  if e.Area == DP:
+    return ARMdpRead(Register=e.Addr)
+  if e.Area == AP:
+    bank = e.Addr & 0xf0;
+    if banks_last[Current] != bank:
+      ARMdpWrite(Register=0x08,Value=bank)
+      banks_last[Current] = bank
+    ARMapRead(Register=(e.Addr & 0x0f))
+    return ARMdpRead(Register=0x0c)
+  if e.Area in (FICR,UICR,SCS,NVMC):
+    base = e.Base
+    align = e.Addr & 0xfffffff0
+    if not tar_last[Current] or \
+       tar_last[Current] & 0xfffffff0 != base+align: 
+       Write(TAR,base+align) 
+       tar_last[Current] = base+align
+    if banks_last[Current] != 0x10:
+      ARMdpWrite(Register=0x08,Value=0x10)
+      banks_last[Current] = 0x10 
+    ARMapRead(Register=(e.Addr & 0x0f))
+    tar_last[Current] += 4
+    if tar_last[Current] % 1024 == 0: tar_last[Current] = -1
+    return Read(RDBUF)
+  assert False
+
+def Write(register,value):
+  for e in regtable:   
+    if e.Id == register:
+      break 
+  assert e.Id == register
+  if e.Area == DP:
+    return ARMdpWrite(Register=e.Addr,Value=value)
+  if e.Area == AP:
+    bank = e.Addr & 0xf0;
+    if banks_last[Current] != bank:
+      ARMdpWrite(Register=0x08,Value=bank)
+      banks_last[Current] = bank
+    ARMapWrite(Register=(e.Addr & 0x0f),Value=value)
+    return
+  if e.Area in (FICR,UICR,SCS,NVMC):
+    base = e.Base
+    align = e.Addr & 0xfffffff0
+    if not tar_last[Current] or \
+       tar_last[Current] & 0xfffffff0 != base+align: 
+       Write(TAR,base+align) 
+       tar_last[Current] = base+align
+    if banks_last[Current] != 0x10:
+      ARMdpWrite(Register=0x08,Value=0x10)
+      banks_last[Current] = 0x10 
+    ARMapWrite(Register=(e.Addr & 0x0f),Value=value)
+    tar_last[Current] += 4
+    if tar_last[Current] % 1024 == 0: tar_last[Current] = -1
+    return 
+  assert False
+
+def readFlash():
+
+  Memory = list() 
+  zerocount = 0
+  page = args.address
+  building = True
+  sys.stdout.write("\n")
+  sys.stdout.flush()
+
+  while building:
+    
+    Write(TAR,page)
+    Page = list()
+    while len(Page) < 1024:
+      R = Read(DRW)
+      Page.append(chr(R&0xff))
+      Page.append(chr((R>>8)&0xff))
+      Page.append(chr((R>>16)&0xff))
+      Page.append(chr((R>>24)&0xff))
+
+    if not args.downloadsize and all(c=="\xff" for c in Page): building = False
+    sys.stdout.write("\rGot page {0:08x} ".format(page))
+    sys.stdout.flush()
+    page += 1024
+    Memory.extend(Page)
+    if len(Memory) >= args.downloadsize: break
+
+  sys.stdout.write("\n")
+  sys.stdout.flush()
+
+  if args.downloadsize:
+    ffcount = 0
+    for i in range(-1,-len(Memory),-1):
+      if Memory[i] != "\xff": break
+      ffcount += 1
+    Memory = Memory[:1+len(Memory)-1-ffcount]
+
+  return ''.join(Memory)
+
+def erasePage(page):
+  assert Read(NVMC_READY) != 0
+  Write(NVMC_CONFIG,0x00000002)  # set CONFIG.EEN (enable erase)
+  # sys.stdout.write("Erasing page {0:08x}\n".format(page))
+  Write(NVMC_ERASEPAGE,page)
+  while True:
+    r = Read(NVMC_READY)
+    if r: return 
+
+def writePage(page,value):
+  if not value: return
+  assert len(value) <= 1024
+  wordlist = [ value[i:4+i] for i in range(0,len(value),4) ] 
+  if len(wordlist[-1]) != 4: wordlist[-1] = (wordlist[-1] + "\x00\x00\x00\x00")[:4]
+  Write(NVMC_CONFIG,0x00000001)  # set CONFIG.EW (enable write)
+  sys.stdout.flush()
+  sys.stdout.write("\rWriting page {0:08x} ".format(page))
+  sys.stdout.flush()
+  Write(TAR,page) 
+  for word in wordlist: 
+    r = 0x80 
+    while r & 0x80: r = Read(CSW)
+    # reverse order of bytes in word for nRF5x 
+    v  = ord(word[3]) << 24
+    v |= ord(word[2]) << 16
+    v |= ord(word[1]) << 8
+    v |= ord(word[0])
+    #  sys.stdout.write("\t\tWriting {0:08x}\n".format(v))
+    Write(DRW,v)
+
+def loadprogram():
+  with open("sample.bin",'rb') as F:
+    program = F.read()
+  return [program[i:i+1024] for i in range(0,len(program),1024)]
+
+def writeprogram(program):
+  page = args.address
+  sys.stdout.write("\n")
+  sys.stdout.flush()
+  for chunk in program:
+    erasePage(page)
+    writePage(page,chunk)
+    page += 0x400 
+  time.sleep(0.01) # settling time?
+  for i in range(3):
+    Write(DHCSR,0xa05f0000)  # clear halt bit (seems to require a few writes to do this)
+  sys.stdout.write("\n")
+  sys.stdout.flush()
+
+def progSetup():
+  r = Read(DHCSR)
+  # sys.stdout.write("DHCSR = {0:08x}\n".format(r))
+  Write(DHCSR,0xa05f0000)
+  Write(DHCSR,0xa05f0001)
+  Write(DHCSR,0xa05f0003)
+  r = Read(DHCSR)
+  # sys.stdout.write("DHCSR = {0:08x}\n".format(r))
+  r = Read(DHCSR)
+  # sys.stdout.write("(again) DHCSR = {0:08x}\n".format(r))
+
+def function_info():
+  sys.stdout.write("CODEPAGESIZE = {0}\n".format(Read(CODEPAGESIZE)))
+  sys.stdout.write("CODSIZE = {0}\n".format(Read(CODESIZE)))
+  sys.stdout.write("CLEN0 = {0}\n".format(Read(CLEN0)))
+
+def function_download():
+  binary = readFlash()
+  try:
+    with open(args.downloadfile,'wb') as F:
+      F.write(binary)
+  except:
+    sys.stderr.write("Error trying to write downloadfile '{0}'\n".format(args.downloadfile))
+    sys.exit(1)
+
+def function_program():
+  progSetup()
+  try:
+    with open(args.progfile,'rb') as F:
+      binary = F.read()
+      program = [binary[i:i+1024] for i in range(0,len(binary),1024)]
+  except:
+    sys.stderr.write("Unable to read file '{0}' (binary to upload)\n".format(args.progfile))
+    sys.exit(1)
+  writeprogram(program)
+
+def function_masserase():
+  progSetup()
+  assert Read(NVMC_READY) != 0
+  Write(NVMC_CONFIG,0x00000002)  # set CONFIG.EEN (enable erase)
+  Write(NVMC_ERASEALL,1)
+  while True:
+    sys.stdout.flush()
+    sys.stdout.write("\rWaiting for flash erase-all to finish ...")
+    sys.stdout.flush()
+    time.sleep(0.01*128) # 0.01 per page, 1kB/page, 128kB flash to erase
+    r = Read(NVMC_READY)
+    if r: 
+      sys.stdout.write("\n")
+      return 
+
+def main():
+  setByArgs()
+  setupPirate()
+  ARM_init()
+  AHB_AP_init()
+  {'info':function_info,
+   'masserase':function_masserase,
+   'program':function_program,
+   'download':function_download}[args.function]()
+  sys.stdout.write("Done.\n")
+
+if __name__ == "__main__": main()
+
+'''
+From the ARMv7-M Architecture Reference Manual, section B1.2:
+
+  ARMv7-M is a memory-mapped architecture, meaning the architecture assigns physical addresses for
+  processor registers to provide:
+  - event entry points, as vectors
+  - system control and configuration.
+  An ARMv7-M implementation maintains exception handler entry points in a table of address pointers.
+  The architecture reserves address space 0xE0000000 to 0xFFFFFFFF for system-level use. ARM reserves the
+  first 1MB of this system address space, 0xE0000000 to 0xE00FFFFF, as the Private Peripheral Bus (PPB).The
+  assignment of the rest of the address space, from 0xE0100000, is IMPLEMENTATION DEFINED, with some
+  memory attribute restrictions. See The system address map on page B3-704 for more information.
+  In the PPB address space, the architecture assigns a 4KB block, 0xE000E000 to 0xE000EFFF, as the System
+  Control Space (SCS). 
+
+  Section B3.2 lays out the SCS:
+
+  The System Control Space (SCS) is a memory-mapped 4KB address space that provides 32-bit registers for
+  configuration, status reporting and control. The SCS registers divide into the following groups:
+  - system control and identification
+  - the CPUID processor identification space
+  - system configuration and status
+  - fault reporting
+  - system timer, SysTick
+  - Nested Vectored Interrupt Controller (NVIC)
+  - Protected Memory System Architecture (PMSA)
+  -  system debug.
+
+  Table B3-3 defines the memory mapping of the SCS register groups.
+     About the System Control Block on page B3-709
+    System control and ID registers on page B3-709
+    Debug register support in the SCS on page C1-828.
+    The following sections summarize the other register groups:
+       The system timer, SysTick on page B3-744
+       Table B3-3 SCS address space regions
+       System Control Space, address range 0xE000E000 to 0xE000EFFF
+    System control and ID registers
+    0xE000E000-0xE000E00F Includes the Interrupt Controller Type and Auxiliary Control registers
+    0xE000ED00-0xE000ED8F System control block
+    0xE000EDF0-0xE000EEFF Debug registers in the SCS
+    0xE000EF00-0xE000EF8F Includes the SW Trigger Interrupt Register
+    0xE000EF90-0xE000EFCF IMPLEMENTATION DEFINED
+    0xE000EFD0-0xE000EFFF Microcontroller-specific ID space
+    SysTick 0xE000E010-0xE000E0FF System Timer, see The system timer, SysTick on page B3-744
+    NVIC 0xE000E100-0xE000ECFF External interrupt controller, see Nested Vectored Interrupt Controller,
+    NVIC on page B3-750
+    MPU 0xE000ED90-0xE000EDEF Memory Protection Unit, see Protected Memory System Architecture,
+    PMSAv7 on page B3-761
+
+  Then, in section C1.2, the Debug Access Port is described; there is an important register DHCSR used
+  to control and monitor debugging operations, the Debug Halting Control and Status Register. So far as I 
+  can tell, DHCSR is the first first of the Debug registers, hence located at 0xE000EDF0
+
+  Fields of DHCSR
+    Bits 31 .. 0
+    Read of DHCSR:
+      Bit 25 S_RESET_ST
+      Bit 26 S_RETIRE_ST
+      Bit 19 S_LOCKUP
+      Bit 18 S_SLEEP
+      Bit 17 S_HALT
+      Bit 16 S_REGRDY
+    Read and Write of DHCSR:
+      Bit 5  C_SNAPSTALL
+      Bit 3  C_MASKINTS
+      Bit 2  C_STEP
+      Bit 1  C_HALT    (set this third)
+      Bit 0  C_DEBUGEN (set this second)
+    Writing bits 31-16 specifies DBGKEY: (do this first)
+      Software must write 0xA05F to this field to enable write accesses 
+      to bits [15:0], otherwise the processor ignores the write access. 
+
+'''
+'''
+Another signicant memory area is described in 
+the nRF51 Series Reference Manual; we are mainly 
+interested in NVMC to send it commands
+
+5.2 Instantiation
+Table 2: Instantiation table
+ID Base address Peripheral Instance Description
+0 0x40000000 CLOCK CLOCK Clock control
+0 0x40000000 POWER POWER Power Control
+0 0x40000000 MPU MPU Memory Protection Unit
+1 0x40001000 RADIO RADIO 2.4 GHz radio
+2 0x40002000 UART UART0 Universal Asynchronous Receiver/Transmitter
+3 0x40003000 SPI SPI0 SPI master 0
+3 0x40003000 TWI TWI0 Two-wire interface master 0
+4 0x40004000 SPI SPI1 SPI master 1
+4 0x40004000 SPIS SPIS1 SPI slave 1
+4 0x40004000 TWI TWI1 Two-wire interface master 1
+6 0x40006000 GPIOTE GPIOTE GPIO tasks and events
+7 0x40007000 ADC ADC Analog to digital converter
+8 0x40008000 TIMER TIMER0 Timer 0
+9 0x40009000 TIMER TIMER1 Timer 1
+10 0x4000A000 TIMER TIMER2 Timer 2
+11 0x4000B000 RTC RTC0 Real time counter 0
+12 0x4000C000 TEMP TEMP Temperature Sensor
+13 0x4000D000 RNG RNG Random Number Generator
+14 0x4000E000 ECB ECB AES ECB Mode Encryption
+15 0x4000F000 AAR AAR Accelerated Address Resolver
+15 0x4000F000 CCM CCM AES CCM Mode Encryption
+16 0x40010000 WDT WDT Watchdog Timer
+17 0x40011000 RTC RTC1 Real time counter 1
+18 0x40012000 QDEC QDEC Quadrature decoder
+19 0x40013000 LPCOMP LPCOMP Low power comparator
+20 0x40014000 SWI SWI0 Software interrupt 0
+21 0x40015000 SWI SWI1 Software interrupt 1
+22 0x40016000 SWI SWI2 Software interrupt 2
+23 0x40017000 SWI SWI3 Software interrupt 3
+24 0x40018000 SWI SWI4 Software interrupt 4
+25 0x40019000 SWI SWI5 Software interrupt 5
+30 0x4001E000 NVMC NVMC Non Volatile Memory Controller
+31 0x4001F000 PPI PPI PPI controller
+N/A 0x10000000 FICR FICR Factory Information Configuration
+N/A 0x10001000 UICR UICR User Information Configuration
+N/A 0x40024000 RTC RTC2 Real time counter 2.
+N/A 0x50000000 GPIO GPIO General purpose input and output
+
+6 Non-Volatile Memory Controller (NVMC)
+  The Non-volatile Memory Controller (NVMC) is used for writing and erasing Non-volatile Memory (NVM).
+  Before a write can be performed the NVM must be enabled for writing in CONFIG.WEN. Similarly, before an
+  erase can be performed the NVM must be enabled for erasing in CONFIG.EEN. The user must make sure
+  that writing and erasing is not enabled at the same time, failing to do so may result in unpredictable behavior.
+
+  6.1.1 Writing to the NVM
+
+  When writing is enabled, the NVM is written by writing a word to a word aligned address in the CODE or
+  UICR. The NVMC is only able to write bits in the NVM that are erased, that is, set to '1'.
+  The time it takes to write a word to the NVM is specified by tWRITE in the product specification. The CPU is
+  halted while the NVMC is writing to the NVM.
+
+  6.1.2 Writing to User Information Configuration Registers
+  UICR registers are written as ordinary non-volatile memory. After the UICR has been written, the new UICR
+  configuration will only take effect after a reset.
+
+  6.1.3 Erase all
+  When erase is enabled, the whole CODE and UICR can be erased in one operation by using the ERASEALL
+  register. ERASEALL will not erase the Factory Information Configuration Registers (FICR).
+  The time it takes to perform an ERASEALL command is specified by tERASEALL in the product specification.
+  The CPU is halted while the NVMC performs the erase operation.\Uffffffff
+'''

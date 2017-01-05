@@ -1,0 +1,36 @@
+acks < 01 01 01
+port > 16 ff ff ff ff ff ff ff expecting 8 acks
+port > 11 9e e7 expecting 11 acks
+port > 16 ff ff ff ff ff ff ff expecting 19 acks
+port > 10 00 expecting 21 acks
+port > 21 10 a5 07 07 07 expecting 24 acks
+acks < 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01
+	resp < 01 00 00
+port > 06 06 06 06 07 expecting 0 acks
+port < 77 14 b1 0b 01 computed parity 1
+Read of DP Register 00 --> 0bb11477
+Write of DP Register 00 <-- 0000001e
+port > 21 10 81 13 1e 00 00 00 30 00 10 b1 13 00 00 00 00 30 00 07 07 07 expecting 19 acks
+acks < 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01
+	resp < 01 01 01
+[1, 1, 1]
+Traceback (most recent call last):
+  File "./nrftool", line 719, in <module>
+    if __name__ == "__main__": main()
+  File "./nrftool", line 712, in main
+    AHB_AP_init()
+  File "./nrftool", line 498, in AHB_AP_init
+    Write(SELECT,0)
+  File "./nrftool", line 545, in Write
+    return ARMdpWrite(Register=e.Addr,Value=value)
+  File "./nrftool", line 458, in ARMdpWrite
+    R = ARMSWD_command(Register=v,Value=w,DP=True,Read=False)
+  File "./nrftool", line 439, in ARMSWD_command
+    BBackcmd()
+  File "./nrftool", line 343, in BBackcmd
+    assert tuple(datalist) == (1,0,0)
+AssertionError
+herman@touring:/arm/opt/nordic/pyBusPirate$ exit
+exit
+
+Script done on Wed 31 Aug 2016 02:51:04 PM CDT
