@@ -1180,11 +1180,11 @@ ID Base address Peripheral Instance Description
 0 0x40000000 MPU MPU Memory Protection Unit
 1 0x40001000 RADIO RADIO 2.4 GHz radio
 2 0x40002000 UART UART0 Universal Asynchronous Receiver/Transmitter
-3 0x40003000 SPI SPI0 SPI master 0
-3 0x40003000 TWI TWI0 Two-wire interface master 0
-4 0x40004000 SPI SPI1 SPI master 1
-4 0x40004000 SPIS SPIS1 SPI slave 1
-4 0x40004000 TWI TWI1 Two-wire interface master 1
+3 0x40003000 SPI SPI0 SPI main 0
+3 0x40003000 TWI TWI0 Two-wire interface main 0
+4 0x40004000 SPI SPI1 SPI main 1
+4 0x40004000 SPIS SPIS1 SPI subordinate 1
+4 0x40004000 TWI TWI1 Two-wire interface main 1
 6 0x40006000 GPIOTE GPIOTE GPIO tasks and events
 7 0x40007000 ADC ADC Analog to digital converter
 8 0x40008000 TIMER TIMER0 Timer 0
